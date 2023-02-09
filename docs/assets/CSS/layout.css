@@ -1,0 +1,10 @@
+header {
+    display: flex;
+    justify-content: space-between;
+}
+
+main {
+    width: 75%;
+    max-width: 800px;
+    margin: auto;
+}
