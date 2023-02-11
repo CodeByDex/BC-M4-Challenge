@@ -13,18 +13,20 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
     
         <link rel="stylesheet" href="./assets/CSS/reset.css">
+        <link rel="stylesheet" href="./assets/CSS/color.css">
         <link rel="stylesheet" href="./assets/CSS/layout.css">
         <link rel="stylesheet" href="./assets/CSS/text.css">
+        <link rel="stylesheet" href="./assets/CSS/effect.css">
 
         <!-- <link rel="stylesheet" href="../frame.css"> -->
     </head>
     <body>
         <header>
             <section><p>High Score</p></section>
-            <section><p>Timer</p></section>
+            <section><p>Timer: <span>#</span></p></section>
         </header>
         <main>
-            <section id="Start" class="hide">
+            <section id="Start" class="">
                 <h1>Coding Quiz Challenge</h1>
                 <article>
                     <p>Try to answer the following code-related questions within the time line.</p>
@@ -51,7 +53,7 @@
                     <button>Submit</button>
                 </article>
             </section>
-            <section id="Score Board">
+            <section id="ScoreBoard" class="hide">
                 <h1>High scores</h1>
                 <ol>
                     <li><span>Initial</span> - <span>##</span></li>

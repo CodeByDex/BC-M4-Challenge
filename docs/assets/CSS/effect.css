@@ -1,0 +1,7 @@
+button:hover {
+    background-color: var(--color-accent1);
+}
+
+#Question li:hover {
+    background-color: var(--color-accent1);
+}

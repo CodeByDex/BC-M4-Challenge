@@ -1,0 +1,31 @@
+:root {
+    --color-accent1: #b963e0;
+    /* RBG 185, 99, 224 */
+
+    --color-accent2: #341c74;
+    --color-accent2-r: 52;
+    --color-accent2-g: 28;
+    --color-accent2-b: 116
+}
+
+button {
+    background-color: var(--color-accent2);
+    color: white;
+}
+
+header {
+    color: var(--color-accent1)
+}
+
+#ScoreBoard ol {
+    background: rgba(var(--color-accent2-r), var(--color-accent2-g), var(--color-accent2-b), .5);
+}
+
+#Question li {
+    background-color: var(--color-accent2);
+    color: white;
+}
+
+#Question p {
+    opacity: .5;
+}

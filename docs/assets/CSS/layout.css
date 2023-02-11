@@ -10,12 +10,15 @@
 button {
     padding: var(--padding-thin) var(--padding-base);
     border-radius: var(--roundCorners);
+    border-style: none;
     font-size: .9rem;
 }
 
 header {
     display: flex;
     justify-content: space-between;
+    padding: var(--padding-base);
+    margin-bottom: 1.75rem;
 }
 
 input {
@@ -41,6 +44,14 @@ main section > * {
     gap: var(--margin-base);
 }
 
+#ScoreBoard li {
+    margin-bottom: var(--margin-thin);
+}
+
+#ScoreBoard ol {
+    padding: var(--padding-thin);
+}
+
 #Question ol {
     width: 33%;
 }
@@ -52,7 +63,7 @@ main section > * {
 }
 
 #Question p {
-    border-top-width: 3px;
+    border-top-width: 1px;
     border-top-style: solid;
     padding: var(--padding-base);
 }
