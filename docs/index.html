@@ -14,7 +14,9 @@
     
         <link rel="stylesheet" href="./assets/CSS/reset.css">
         <link rel="stylesheet" href="./assets/CSS/layout.css">
-        <link rel="stylesheet" href="./assets/CSS/text.css"
+        <link rel="stylesheet" href="./assets/CSS/text.css">
+
+        <!-- <link rel="stylesheet" href="../frame.css"> -->
     </head>
     <body>
         <header>
@@ -30,7 +32,7 @@
                 </article>
                 <button>Start Quiz</button>
             </section>
-            <section id="Question">
+            <section id="Question" class="hide">
                 <h1>Questions about code:</h1>
                 <ol>
                     <li>Answer 1</li>
@@ -40,7 +42,15 @@
                 </ol>
                 <p>Wrong/Right</p>
             </section>
-            <section id="Results">Results</section>
+            <section id="Results">
+                <h1>All done!</h1>
+                <p>Your finale score is <span>##</span>.</p>
+                <article id="InitialForm">
+                    <label>Enter initials:</label>
+                    <input type="text">
+                    <button>Submit</button>
+                </article>
+            </section>
             <section id="Score Board">Score Board</section>
         </main>
     </body>

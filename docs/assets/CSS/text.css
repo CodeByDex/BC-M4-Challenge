@@ -8,12 +8,11 @@ h1 {
 }
 
 main section {
-    text-align: center;
+    text-align: left;
 }
 
-
-#Question {
-    text-align: left;
+#Start {
+    text-align: center;
 }
 
 #Question p {
