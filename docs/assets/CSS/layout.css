@@ -1,16 +1,24 @@
 :root {
+    --padding-thin: 0.25rem;
     --padding-base: 0.5rem;
     --margin-base: 0.5rem;
+
     --roundCorners: 10%;
 }
+
 button {
-    padding: var(--padding-base);
+    padding: var(--padding-thin) var(--padding-base);
     border-radius: var(--roundCorners);
+    font-size: .9rem;
 }
 
 header {
     display: flex;
     justify-content: space-between;
+}
+
+input {
+    font-size: 0.9rem;
 }
 
 main {
@@ -35,6 +43,11 @@ main section ol li {
 
 .hide {
     display: none;
+}
+
+#InitialForm {
+    display: flex;
+    gap: var(--margin-base);
 }
 
 #Question p {
