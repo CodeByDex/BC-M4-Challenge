@@ -10,3 +10,12 @@ h1 {
 main section {
     text-align: center;
 }
+
+
+#Question {
+    text-align: left;
+}
+
+#Question p {
+    font-style: italic;
+}

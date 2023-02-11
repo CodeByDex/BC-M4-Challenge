@@ -1,6 +1,11 @@
+:root {
+    --padding-base: 0.5rem;
+    --margin-base: 0.5rem;
+    --roundCorners: 10%;
+}
 button {
-    padding: .5rem;
-    border-radius: 10%;
+    padding: var(--padding-base);
+    border-radius: var(--roundCorners);
 }
 
 header {
@@ -18,3 +23,22 @@ main section > * {
     margin: 1rem 0;
 }
 
+main section ol {
+    width: 33%;
+}
+
+main section ol li {
+    margin: var(--margin-base);
+    padding: var(--padding-base);
+    border-radius: var(--roundCorners);
+}
+
+.hide {
+    display: none;
+}
+
+#Question p {
+    border-top-width: 3px;
+    border-top-style: solid;
+    padding: var(--padding-base);
+}
