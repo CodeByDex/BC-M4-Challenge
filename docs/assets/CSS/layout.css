@@ -2,6 +2,7 @@
     --padding-thin: 0.25rem;
     --padding-base: 0.5rem;
     --margin-base: 0.5rem;
+    --margin-thick: 1rem;
 
     --roundCorners: 10%;
 }
@@ -24,21 +25,11 @@ input {
 main {
     width: 75%;
     max-width: 800px;
-    margin: auto;
+    margin: 0 auto;
 }
 
 main section > * {
-    margin: 1rem 0;
-}
-
-main section ol {
-    width: 33%;
-}
-
-main section ol li {
-    margin: var(--margin-base);
-    padding: var(--padding-base);
-    border-radius: var(--roundCorners);
+    margin-bottom: var(--margin-thick);
 }
 
 .hide {
@@ -48,6 +39,16 @@ main section ol li {
 #InitialForm {
     display: flex;
     gap: var(--margin-base);
+}
+
+#Question ol {
+    width: 33%;
+}
+
+#Question ol li {
+    margin: var(--margin-base);
+    padding: var(--padding-base);
+    border-radius: var(--roundCorners);
 }
 
 #Question p {
