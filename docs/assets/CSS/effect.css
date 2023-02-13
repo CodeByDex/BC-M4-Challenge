@@ -1,7 +1,24 @@
-button:hover {
-    background-color: var(--color-accent1);
+@media screen and (width >= 766px)
+{
+
+    button:hover {
+        background-color: var(--color-accent1);
+    }
+    
+    #Question li:hover {
+        background-color: var(--color-accent1);
+    }
 }
 
-#Question li:hover {
-    background-color: var(--color-accent1);
+
+@media screen and (width < 766px)
+{
+
+    button:active {
+        background-color: var(--color-accent1);
+    }
+    
+    #Question li:active {
+        background-color: var(--color-accent1);
+    }
 }
