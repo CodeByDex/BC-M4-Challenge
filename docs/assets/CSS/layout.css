@@ -44,6 +44,10 @@ main section > * {
     gap: var(--margin-base);
 }
 
+#Results label {
+    margin: auto 0;
+}
+
 #ScoreBoard li {
     margin-bottom: var(--margin-thin);
 }
