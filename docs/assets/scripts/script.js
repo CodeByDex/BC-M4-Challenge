@@ -6,6 +6,8 @@ let sectionStart = document.querySelector("#Start");
 let sectionQuestion = document.querySelector("#Question");
 let sectionResults = document.querySelector("#Results");
 let sectionScoreBoard = document.querySelector("#ScoreBoard");
+let wrongWrightBox = document.querySelector("#Question p");
+let responseTimout;
 
 let sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
 
@@ -40,8 +42,6 @@ let currentAnswer = "";
 let usedQuestions = [];
 
 buttonStart.addEventListener("click", function() {
-    ResetUsedQuestions();
-
     LoadQuestion();
 
     ChangeSections(sectionQuestion);
@@ -49,7 +49,37 @@ buttonStart.addEventListener("click", function() {
     StartTimer();
 });
 
-function ResetUsedQuestions() {};
+sectionQuestion.querySelector(":scope ol").addEventListener("click", function(event) {
+    if (event.target.tagName !== "LI" || responseTimout != undefined)
+    {
+        //the user didn't click an answer so don't do anything
+        //or the user already answered and the question hasn't reset yet. 
+        return;
+    }
+    
+    if (event.target.textContent === currentAnswer)
+    {
+        wrongWrightBox.textContent = "Correct!";
+    } else {
+        wrongWrightBox.textContent = "Wrong!";
+    }
+
+    wrongWrightBox.classList.remove("hide");
+
+    responseTimout = window.setTimeout(function () {
+        responseTimout = undefined;
+
+        LoadQuestion();
+
+    }, 2000);
+});
+
+function ResetUsedQuestions() {
+    while (usedQuestions.pop() !== undefined)
+    {
+        usedQuestions.pop();
+    }
+};
 
 function ChangeSections(NewSection) {
     sections.forEach(element => {
@@ -62,6 +92,14 @@ function ChangeSections(NewSection) {
 };
 
 function LoadQuestion() {
+    //We've used all the available questions so end the game. 
+    if(Questions.length === usedQuestions.length)
+    {
+        EndGame();
+
+        return;
+    }
+
     const question = GetQuestion();
 
     const prompt = document.querySelector("#Question h1");
@@ -83,12 +121,11 @@ function LoadQuestion() {
 
     currentAnswer = question.answer;
 
-    const wrongRight = document.querySelector("#Question p");
-    wrongRight.classList.add("hide");
+    wrongWrightBox.classList.add("hide");
 };
 
 function GetQuestion(){
-    const randomNum = Math.floor(Math.random() * (Questions.length - usedQuestions.length));
+    const randomNum = Math.floor(Math.random() * Questions.length);
 
     if (usedQuestions.some(r => r === randomNum)) {
         return GetQuestion();
@@ -100,3 +137,15 @@ function GetQuestion(){
 };
 
 function StartTimer() {};
+
+function EndGame() {
+    //if a question was still in play end it
+    if (responseTimout != undefined)
+    {
+        window.clearTimeout(responseTimout);
+    }
+
+    ChangeSections(sectionResults);
+
+    ResetUsedQuestions();
+};
