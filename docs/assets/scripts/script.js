@@ -7,7 +7,12 @@ let sectionQuestion = document.querySelector("#Question");
 let sectionResults = document.querySelector("#Results");
 let sectionScoreBoard = document.querySelector("#ScoreBoard");
 let wrongWrightBox = document.querySelector("#Question p");
+let scoreBox = document.querySelector("#Score");
+
 let responseTimout;
+let questionInterval;
+let questionTimeBonus = 0;
+let score;
 
 let sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
 
@@ -42,6 +47,8 @@ let currentAnswer = "";
 let usedQuestions = [];
 
 buttonStart.addEventListener("click", function() {
+    score = 0;
+
     LoadQuestion();
 
     ChangeSections(sectionQuestion);
@@ -56,15 +63,6 @@ sectionQuestion.querySelector(":scope ol").addEventListener("click", function(ev
         //or the user already answered and the question hasn't reset yet. 
         return;
     }
-    
-    if (event.target.textContent === currentAnswer)
-    {
-        wrongWrightBox.textContent = "Correct!";
-    } else {
-        wrongWrightBox.textContent = "Wrong!";
-    }
-
-    wrongWrightBox.classList.remove("hide");
 
     responseTimout = window.setTimeout(function () {
         responseTimout = undefined;
@@ -72,6 +70,16 @@ sectionQuestion.querySelector(":scope ol").addEventListener("click", function(ev
         LoadQuestion();
 
     }, 2000);
+    
+    if (event.target.textContent === currentAnswer)
+    {
+        wrongWrightBox.textContent = "Correct!";
+        score += 1 + questionTimeBonus;
+    } else {
+        wrongWrightBox.textContent = "Wrong!";
+    }
+
+    wrongWrightBox.classList.remove("hide");
 });
 
 function ResetUsedQuestions() {
@@ -119,10 +127,27 @@ function LoadQuestion() {
         }
     }
 
+    StartQuestionBonusInterval();
+
     currentAnswer = question.answer;
 
     wrongWrightBox.classList.add("hide");
 };
+
+function StartQuestionBonusInterval() {
+    //reset the interval if it's still running from previous question
+    clearInterval(questionInterval);
+
+    questionTimeBonus = 5;
+
+    questionInterval = setInterval(function () {
+        questionTimeBonus--;
+
+        if (questionTimeBonus === 0) {
+            clearInterval(questionInterval);
+        }
+    }, 1000);
+}
 
 function GetQuestion(){
     const randomNum = Math.floor(Math.random() * Questions.length);
@@ -139,11 +164,11 @@ function GetQuestion(){
 function StartTimer() {};
 
 function EndGame() {
-    //if a question was still in play end it
-    if (responseTimout != undefined)
-    {
-        window.clearTimeout(responseTimout);
-    }
+
+    clearTimeout(responseTimout);
+    clearInterval(questionInterval);
+
+    scoreBox.textContent = score;
 
     ChangeSections(sectionResults);
 
