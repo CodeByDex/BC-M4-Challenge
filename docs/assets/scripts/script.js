@@ -29,18 +29,27 @@ let Questions = [{
         prompt: "A very useful tool used during development and debugging for printing content to the debugger is:",
         choices: ['JavaScript', 'terminal/bash', 'for loops', 'console.log'],
         answer: "console.log"
+    },{
+        prompt: "True or False: Java and JavaScript are the same thing",
+        choices: ['true', 'false'],
+        answer: "false"
     }
 ];
 
 let currentAnswer = "";
+let usedQuestions = [];
 
 buttonStart.addEventListener("click", function() {
+    ResetUsedQuestions();
+
     LoadQuestion();
 
     ChangeSections(sectionQuestion);
 
     StartTimer();
 });
+
+function ResetUsedQuestions() {};
 
 function ChangeSections(NewSection) {
     sections.forEach(element => {
@@ -79,7 +88,15 @@ function LoadQuestion() {
 };
 
 function GetQuestion(){
-    return Questions[0];
+    const randomNum = Math.floor(Math.random() * (Questions.length - usedQuestions.length));
+
+    if (usedQuestions.some(r => r === randomNum)) {
+        return GetQuestion();
+    } else {
+        usedQuestions.push(randomNum);
+    }
+
+    return Questions[randomNum];
 };
 
 function StartTimer() {};
