@@ -25,33 +25,7 @@ let highScores = [];
 
 let sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
 
-let Questions = [{
-        prompt: "the condition in an if /else statement is enclosed with _____",
-        choices: ['quotes', 'curly brackets', 'parenthesis', 'square brackets'],
-        answer: "parenthesis"
-    },{
-        prompt: "Arrays in JavaScript can be used to store ______",
-        choices: ['numbers and strings', 'oher arrays', 'booleans', 'all of the above'],
-        answer: "all of the above"
-    },{
-        prompt: "String values must be enclosed with _____ when being assigned to variables",
-        choices: ['commas', 'curly brackets', 'quotes', 'parenthesis'],
-        answer: "quotes"
-    },{
-        prompt: "Commonly used data types DO Not Include:",
-        choices: ['strings', 'booleans', 'alerts', 'numbers'],
-        answer: "alerts"
-    },{
-        prompt: "A very useful tool used during development and debugging for printing content to the debugger is:",
-        choices: ['JavaScript', 'terminal/bash', 'for loops', 'console.log'],
-        answer: "console.log"
-    },{
-        prompt: "True or False: Java and JavaScript are the same thing",
-        choices: ['true', 'false'],
-        answer: "false"
-    }
-];
-
+let Questions;
 let currentAnswer = "";
 let usedQuestions = [];
 
@@ -272,3 +246,7 @@ function EndGame() {
 UpdateTimeLeft();
 //Needed to get scores from storage initially if they already exist
 LoadScoreBoard();
+
+fetch("./assets/data/questions.json")
+    .then((response) => response.json())
+    .then((json) => Questions = json);
