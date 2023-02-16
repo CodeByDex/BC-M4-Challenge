@@ -1,5 +1,7 @@
 "use strict";
 
+const gameStartTime = 60;
+
 let buttonStart = document.querySelector("#ButtonStart");
 
 let sectionStart = document.querySelector("#Start");
@@ -8,11 +10,14 @@ let sectionResults = document.querySelector("#Results");
 let sectionScoreBoard = document.querySelector("#ScoreBoard");
 let wrongWrightBox = document.querySelector("#Question p");
 let scoreBox = document.querySelector("#Score");
+let timeLeftBox = document.querySelector("#TimeLeft");
 
 let responseTimout;
 let questionInterval;
 let questionTimeBonus = 0;
 let score;
+let gameTimeout = gameStartTime;
+let gameInterval;
 
 let sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
 
@@ -161,16 +166,45 @@ function GetQuestion(){
     return Questions[randomNum];
 };
 
-function StartTimer() {};
+function StartTimer() {
+    gameTimeout = gameStartTime;
+
+    gameInterval = setInterval(function () {
+        gameTimeout--;
+
+        if (gameTimeout < 0) {
+
+            EndGame();
+            return;
+        }
+        
+        UpdateTimeLeft();
+    }, 1000)
+
+};
+
+function UpdateTimeLeft() {
+    if (gameTimeout >= 0){
+        timeLeftBox.textContent = gameTimeout;
+    } else {
+        timeLeftBox.textContent = 0;
+    }
+};
 
 function EndGame() {
 
     clearTimeout(responseTimout);
     clearInterval(questionInterval);
+    clearInterval(gameInterval);
 
     scoreBox.textContent = score;
 
     ChangeSections(sectionResults);
 
     ResetUsedQuestions();
+
+    gameTimeout = gameStartTime;
+    UpdateTimeLeft();
 };
+
+UpdateTimeLeft();
