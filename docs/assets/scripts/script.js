@@ -73,11 +73,15 @@ buttonSubmit.addEventListener("click", function() {
 });
 
 function LoadScoreBoard() {
+    highScores = JSON.parse(localStorage.getItem("HighScores"));
+
     highScores.sort(function(a, b) {
         return a.score-b.score;
     });
 
     let scoreBoard = document.querySelector("#ScoreBoard ol");
+
+    scoreBoard.innerHTML = "";
 
     highScores.forEach(highScore => {
         let newScore = document.createElement("li");
@@ -90,6 +94,8 @@ function LoadScoreBoard() {
 
 function AddHighScore(highScore){
     highScores.push(highScore);
+
+    localStorage.setItem("HighScores", JSON.stringify(highScores));
 };
 
 function CreateHighScoreEntry(initials, score){
@@ -245,3 +251,4 @@ function EndGame() {
 };
 
 UpdateTimeLeft();
+LoadScoreBoard();
