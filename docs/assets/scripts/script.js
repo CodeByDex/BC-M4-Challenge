@@ -1,6 +1,7 @@
 "use strict";
 
 const gameStartTime = 60;
+const lsHighScore = "HighScores";
 
 let buttonStart = document.querySelector("#ButtonStart");
 let buttonSubmit = document.querySelector("#InitialForm button");
@@ -72,8 +73,26 @@ buttonSubmit.addEventListener("click", function() {
     ChangeSections(sectionScoreBoard);
 });
 
+document.querySelector("#LinkHighScore").addEventListener("click", function () {
+    LoadScoreBoard();
+
+    ChangeSections(sectionScoreBoard);
+});
+
+document.querySelector("#ButtonClearHighScore").addEventListener("click", function () {
+    localStorage.removeItem(lsHighScore);
+    
+    highScores = [];
+
+    LoadScoreBoard();
+});
+
 function LoadScoreBoard() {
-    highScores = JSON.parse(localStorage.getItem("HighScores"));
+    let scoreString = localStorage.getItem(lsHighScore);
+
+    if (scoreString != null){
+        highScores = JSON.parse(scoreString);
+    }
 
     highScores.sort(function(a, b) {
         return a.score-b.score;
@@ -95,7 +114,7 @@ function LoadScoreBoard() {
 function AddHighScore(highScore){
     highScores.push(highScore);
 
-    localStorage.setItem("HighScores", JSON.stringify(highScores));
+    localStorage.setItem(lsHighScore, JSON.stringify(highScores));
 };
 
 function CreateHighScoreEntry(initials, score){
@@ -251,4 +270,5 @@ function EndGame() {
 };
 
 UpdateTimeLeft();
+//Needed to get scores from storage initially if they already exist
 LoadScoreBoard();
