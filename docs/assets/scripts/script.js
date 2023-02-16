@@ -3,6 +3,7 @@
 const gameStartTime = 60;
 
 let buttonStart = document.querySelector("#ButtonStart");
+let buttonSubmit = document.querySelector("#InitialForm button");
 
 let sectionStart = document.querySelector("#Start");
 let sectionQuestion = document.querySelector("#Question");
@@ -16,9 +17,10 @@ let responseTimout;
 let questionInterval;
 let questionTimeBonus = 0;
 let questionTimePenalty = 0;
-let score;
+let score = 0;
 let gameTimeout = gameStartTime;
 let gameInterval;
+let highScores = [];
 
 let sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
 
@@ -61,6 +63,41 @@ buttonStart.addEventListener("click", function() {
 
     StartTimer();
 });
+
+buttonSubmit.addEventListener("click", function() {
+    AddHighScore(CreateHighScoreEntry(document.querySelector("#InitialForm input").value, score));
+
+    LoadScoreBoard();
+
+    ChangeSections(sectionScoreBoard);
+});
+
+function LoadScoreBoard() {
+    highScores.sort(function(a, b) {
+        return a.score-b.score;
+    });
+
+    let scoreBoard = document.querySelector("#ScoreBoard ol");
+
+    highScores.forEach(highScore => {
+        let newScore = document.createElement("li");
+
+        newScore.textContent = highScore.initials + ' - ' + highScore.score;
+
+        scoreBoard.appendChild(newScore);
+    });
+};
+
+function AddHighScore(highScore){
+    highScores.push(highScore);
+};
+
+function CreateHighScoreEntry(initials, score){
+    return {
+        initials: initials,
+        score: score
+    }
+};
 
 sectionQuestion.querySelector(":scope ol").addEventListener("click", function(event) {
     if (event.target.tagName !== "LI" || responseTimout != undefined)
