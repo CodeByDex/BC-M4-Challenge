@@ -15,6 +15,7 @@ let timeLeftBox = document.querySelector("#TimeLeft");
 let responseTimout;
 let questionInterval;
 let questionTimeBonus = 0;
+let questionTimePenalty = 0;
 let score;
 let gameTimeout = gameStartTime;
 let gameInterval;
@@ -82,6 +83,7 @@ sectionQuestion.querySelector(":scope ol").addEventListener("click", function(ev
         score += 1 + questionTimeBonus;
     } else {
         wrongWrightBox.textContent = "Wrong!";
+        gameTimeout -= questionTimePenalty;
     }
 
     wrongWrightBox.classList.remove("hide");
@@ -132,25 +134,23 @@ function LoadQuestion() {
         }
     }
 
-    StartQuestionBonusInterval();
+    StartQuestionInterval();
 
     currentAnswer = question.answer;
 
     wrongWrightBox.classList.add("hide");
 };
 
-function StartQuestionBonusInterval() {
+function StartQuestionInterval() {
     //reset the interval if it's still running from previous question
     clearInterval(questionInterval);
 
     questionTimeBonus = 5;
+    questionTimePenalty = 0;
 
     questionInterval = setInterval(function () {
         questionTimeBonus--;
-
-        if (questionTimeBonus === 0) {
-            clearInterval(questionInterval);
-        }
+        questionTimePenalty++;
     }, 1000);
 }
 
