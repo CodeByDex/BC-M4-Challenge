@@ -11,6 +11,7 @@ const sectionScoreBoard = document.querySelector("#ScoreBoard");
 const sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
 
 const wrongWrightBox = document.querySelector("#Question p");
+const inputNewInitials = document.querySelector("#InitialForm input");
 
 let responseTimout;
 let questionInterval;
@@ -41,11 +42,17 @@ document.querySelector("#ButtonStart").addEventListener("click", function() {
 });
 
 document.querySelector("#InitialForm button").addEventListener("click", function() {
-    AddHighScore(CreateHighScoreEntry(document.querySelector("#InitialForm input").value, score));
+    let initals = inputNewInitials.value;
 
-    LoadScoreBoard();
+    if (initals.length > 3 || initals.length < 1){
+        alert("Initials must be 1-3 characters");
+    } else {    
+        AddHighScore(CreateHighScoreEntry(initals, score));
 
-    ChangeSections(sectionScoreBoard);
+        LoadScoreBoard();
+
+        ChangeSections(sectionScoreBoard);
+    }
 });
 
 document.querySelector("#LinkHighScore").addEventListener("click", function () {
@@ -237,6 +244,8 @@ function EndGame() {
     clearInterval(gameInterval);
 
     document.querySelector("#Score").textContent = score;
+
+    inputNewInitials.value = "";
 
     ChangeSections(sectionResults);
 
