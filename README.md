@@ -9,6 +9,8 @@ You can leverage this app as is or if you'd want to add, remove or change the qu
 
 The app supports a maximum of 4 possible answers but will dynamically display anywhere from 1-4.
 
+A basic frame page was created that can be used to test changes to the general layout; additionally you can add the frame.css file to either page to better see where things are falling on the page to troubleshoot layout issues. 
+
 ## Where
 This project can be found at: https://code.bydex.co/BC-M4-Challenge/
 
