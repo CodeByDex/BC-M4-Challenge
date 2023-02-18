@@ -70,7 +70,7 @@ function LoadScoreBoard() {
     }
 
     highScores.sort(function(a, b) {
-        return a.score-b.score;
+        return b.score-a.score;
     });
 
     let scoreBoard = document.querySelector("#ScoreBoard ol");
