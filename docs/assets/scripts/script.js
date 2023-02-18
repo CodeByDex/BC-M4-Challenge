@@ -3,16 +3,14 @@
 const gameStartTime = 60;
 const lsHighScore = "HighScores";
 
-let buttonStart = document.querySelector("#ButtonStart");
-let buttonSubmit = document.querySelector("#InitialForm button");
 
-let sectionStart = document.querySelector("#Start");
-let sectionQuestion = document.querySelector("#Question");
-let sectionResults = document.querySelector("#Results");
-let sectionScoreBoard = document.querySelector("#ScoreBoard");
-let wrongWrightBox = document.querySelector("#Question p");
-let scoreBox = document.querySelector("#Score");
-let timeLeftBox = document.querySelector("#TimeLeft");
+const sectionStart = document.querySelector("#Start");
+const sectionQuestion = document.querySelector("#Question");
+const sectionResults = document.querySelector("#Results");
+const sectionScoreBoard = document.querySelector("#ScoreBoard");
+const sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
+
+const wrongWrightBox = document.querySelector("#Question p");
 
 let responseTimout;
 let questionInterval;
@@ -23,13 +21,16 @@ let gameTimeout = gameStartTime;
 let gameInterval;
 let highScores = [];
 
-let sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
 
 let Questions;
 let currentAnswer = "";
 let usedQuestions = [];
 
-buttonStart.addEventListener("click", function() {
+document.querySelector("#ButtonBack").addEventListener("click", function() {
+    ChangeSections(sectionStart);
+});
+
+document.querySelector("#ButtonStart").addEventListener("click", function() {
     score = 0;
 
     LoadQuestion();
@@ -39,7 +40,7 @@ buttonStart.addEventListener("click", function() {
     StartTimer();
 });
 
-buttonSubmit.addEventListener("click", function() {
+document.querySelector("#InitialForm button").addEventListener("click", function() {
     AddHighScore(CreateHighScoreEntry(document.querySelector("#InitialForm input").value, score));
 
     LoadScoreBoard();
@@ -220,6 +221,8 @@ function StartTimer() {
 };
 
 function UpdateTimeLeft() {
+    let timeLeftBox = document.querySelector("#TimeLeft");
+
     if (gameTimeout >= 0){
         timeLeftBox.textContent = gameTimeout;
     } else {
@@ -233,7 +236,7 @@ function EndGame() {
     clearInterval(questionInterval);
     clearInterval(gameInterval);
 
-    scoreBox.textContent = score;
+    document.querySelector("#Score").textContent = score;
 
     ChangeSections(sectionResults);
 
