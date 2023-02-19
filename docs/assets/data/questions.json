@@ -1,6 +1,6 @@
 [
     {
-        "prompt": "the condition in an if /else statement is enclosed with _____",
+        "prompt": "The condition in an if /else statement is enclosed with _____",
         "choices": [
             "quotes",
             "curly brackets",
@@ -13,7 +13,7 @@
         "prompt": "Arrays in JavaScript can be used to store ______",
         "choices": [
             "numbers and strings",
-            "oher arrays",
+            "other arrays",
             "booleans",
             "all of the above"
         ],

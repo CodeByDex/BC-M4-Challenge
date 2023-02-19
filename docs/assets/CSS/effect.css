@@ -16,7 +16,6 @@ button:focus {
     }
 }
 
-
 @media screen and (width < 766px) {
 
     button:active {
