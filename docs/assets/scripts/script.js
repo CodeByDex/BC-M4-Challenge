@@ -9,6 +9,7 @@ const sectionQuestion = document.querySelector("#Question");
 const sectionResults = document.querySelector("#Results");
 const sectionScoreBoard = document.querySelector("#ScoreBoard");
 const sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
+const sectionHeader = document.querySelector("header");
 
 const wrongWrightBox = document.querySelector("#Question p");
 const inputNewInitials = document.querySelector("#InitialForm input");
@@ -29,6 +30,7 @@ let usedQuestions = [];
 
 document.querySelector("#ButtonBack").addEventListener("click", function() {
     ChangeSections(sectionStart);
+    sectionHeader.style = "";
 });
 
 document.querySelector("#ButtonStart").addEventListener("click", function() {
@@ -52,6 +54,7 @@ document.querySelector("#InitialForm button").addEventListener("click", function
         LoadScoreBoard();
 
         ChangeSections(sectionScoreBoard);
+        sectionHeader.style = "visibility: hidden";
     }
 });
 
@@ -59,6 +62,7 @@ document.querySelector("#LinkHighScore").addEventListener("click", function () {
     LoadScoreBoard();
 
     ChangeSections(sectionScoreBoard);
+    sectionHeader.style = "visibility: hidden";
 });
 
 document.querySelector("#ButtonClearHighScore").addEventListener("click", function () {
