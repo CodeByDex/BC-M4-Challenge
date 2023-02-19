@@ -220,6 +220,8 @@ function LoadQuestion() {
         if (index < question.choices.length) {
             promptLIs[index].classList.remove("hide");
             promptLIs[index].textContent = question.choices[index];
+            //if using keyboard reset selection 
+            promptLIs[index].blur();
         } else {
             promptLIs[index].classList.add("hide");
         }
