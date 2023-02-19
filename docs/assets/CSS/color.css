@@ -17,7 +17,7 @@ header {
     color: var(--color-accent1)
 }
 
-#ScoreBoard ol {
+#Score-Board ol {
     background: rgba(var(--color-accent2-r), var(--color-accent2-g), var(--color-accent2-b), .5);
 }
 

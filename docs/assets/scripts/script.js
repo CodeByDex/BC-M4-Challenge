@@ -9,7 +9,7 @@ const lsHighScore = "HighScores";
 const sectionStart = document.querySelector("#Start");
 const sectionQuestion = document.querySelector("#Question");
 const sectionResults = document.querySelector("#Results");
-const sectionScoreBoard = document.querySelector("#ScoreBoard");
+const sectionScoreBoard = document.querySelector("#Score-Board");
 const sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
 const sectionHeader = document.querySelector("header");
 
@@ -32,18 +32,18 @@ let usedQuestions = [];
 Events
 ************************************************************************************/
 
-document.querySelector("#ButtonBack").addEventListener("click", function () {
+document.querySelector("#Button-Back").addEventListener("click", function () {
     ChangeSections(sectionStart);
     sectionHeader.style = "";
 });
 
-document.querySelector("#ButtonClearHighScore").addEventListener("click", function () {
+document.querySelector("#Button-Clear-High-Score").addEventListener("click", function () {
     ClearHighScores();
 
     LoadScoreBoard();
 });
 
-document.querySelector("#ButtonStart").addEventListener("click", function () {
+document.querySelector("#Button-Start").addEventListener("click", function () {
     score = 0;
 
     LoadQuestion();
@@ -53,7 +53,7 @@ document.querySelector("#ButtonStart").addEventListener("click", function () {
     StartGameInterval();
 });
 
-document.querySelector("#InitialForm button").addEventListener("click", function () {
+document.querySelector("#Initial-Form button").addEventListener("click", function () {
     let initals = inputNewInitials.value;
 
     if (initals.length > 3 || initals.length < 1) {
@@ -68,9 +68,9 @@ document.querySelector("#InitialForm button").addEventListener("click", function
     }
 });
 
-document.querySelector("#LinkHighScore").addEventListener("click", ClickHighScore);
+document.querySelector("#Link-High-Score").addEventListener("click", ClickHighScore);
 
-document.querySelector("#LinkHighScore").addEventListener("keyup", function (event) {
+document.querySelector("#Link-High-Score").addEventListener("keyup", function (event) {
     if (IsKeyboardClick(event)) {
         ClickHighScore();
     }
@@ -136,7 +136,7 @@ function LoadScoreBoard() {
         return b.score - a.score;
     });
 
-    let scoreBoard = document.querySelector("#ScoreBoard ol");
+    let scoreBoard = sectionScoreBoard.querySelector(":scope ol");
 
     scoreBoard.innerHTML = "";
 
@@ -209,7 +209,7 @@ function LoadQuestion() {
 
     const question = GetQuestion();
 
-    document.querySelector("#Question h1") = question.prompt;
+    document.querySelector("#Question h1").textContent = question.prompt;
 
     const promptLIs = document.querySelectorAll("#Question li");
 
@@ -275,7 +275,7 @@ function StartGameInterval() {
 };
 
 function UpdateGameInterval() {
-    let timeLeftBox = document.querySelector("#TimeLeft");
+    let timeLeftBox = document.querySelector("#Time-Left");
 
     if (gameTimeout >= 0) {
         timeLeftBox.textContent = gameTimeout;
