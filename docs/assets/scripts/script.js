@@ -1,8 +1,10 @@
 "use strict";
 
+/* *********************************************************************************
+Variable Declariations
+************************************************************************************/
 const gameStartTime = 60;
 const lsHighScore = "HighScores";
-
 
 const sectionStart = document.querySelector("#Start");
 const sectionQuestion = document.querySelector("#Question");
@@ -12,7 +14,7 @@ const sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoa
 const sectionHeader = document.querySelector("header");
 
 const wrongWrightBox = document.querySelector("#Question p");
-const inputNewInitials = document.querySelector("#InitialForm input");
+const inputNewInitials = document.querySelector("#Initial-Box");
 
 let responseTimout;
 let questionInterval;
@@ -21,16 +23,24 @@ let questionTimePenalty = 0;
 let score = 0;
 let gameTimeout = gameStartTime;
 let gameInterval;
-let highScores = [];
-
 
 let Questions;
 let currentAnswer = "";
 let usedQuestions = [];
 
+/**********************************************************************************
+Events
+************************************************************************************/
+
 document.querySelector("#ButtonBack").addEventListener("click", function () {
     ChangeSections(sectionStart);
     sectionHeader.style = "";
+});
+
+document.querySelector("#ButtonClearHighScore").addEventListener("click", function () {
+    ClearHighScores();
+
+    LoadScoreBoard();
 });
 
 document.querySelector("#ButtonStart").addEventListener("click", function () {
@@ -66,62 +76,6 @@ document.querySelector("#LinkHighScore").addEventListener("keyup", function (eve
     }
 });
 
-document.querySelector("#ButtonClearHighScore").addEventListener("click", function () {
-    localStorage.removeItem(lsHighScore);
-
-    highScores = [];
-
-    LoadScoreBoard();
-});
-
-function IsKeyboardClick(event) {
-    return event.key === "Enter" || event.key === " ";
-}
-
-function highscoreClick() {
-    LoadScoreBoard();
-
-    ChangeSections(sectionScoreBoard);
-    sectionHeader.style = "visibility: hidden";
-}
-
-function LoadScoreBoard() {
-    let scoreString = localStorage.getItem(lsHighScore);
-
-    if (scoreString != null) {
-        highScores = JSON.parse(scoreString);
-    }
-
-    highScores.sort(function (a, b) {
-        return b.score - a.score;
-    });
-
-    let scoreBoard = document.querySelector("#ScoreBoard ol");
-
-    scoreBoard.innerHTML = "";
-
-    highScores.forEach(highScore => {
-        let newScore = document.createElement("li");
-
-        newScore.textContent = highScore.initials + ' - ' + highScore.score;
-
-        scoreBoard.appendChild(newScore);
-    });
-};
-
-function AddHighScore(highScore) {
-    highScores.push(highScore);
-
-    localStorage.setItem(lsHighScore, JSON.stringify(highScores));
-};
-
-function CreateHighScoreEntry(initials, score) {
-    return {
-        initials: initials,
-        score: score
-    }
-};
-
 sectionQuestion.querySelector(":scope ol").addEventListener("click", answerClick);
 
 sectionQuestion.querySelector(":scope ol").addEventListener("keyup", function (event) {
@@ -130,6 +84,78 @@ sectionQuestion.querySelector(":scope ol").addEventListener("keyup", function (e
     }
 });
 
+/**********************************************************************************
+Local Storage Functions
+************************************************************************************/
+function GetHighScores() {
+    let scoreString = localStorage.getItem(lsHighScore);
+
+    if (scoreString != null) {
+        return JSON.parse(scoreString);
+    } else {
+        return [];
+    }
+};
+
+function AddHighScore(highScore) {
+    let scores = GetHighScores();
+
+    scores.push(highScore);
+
+    localStorage.setItem(lsHighScore, JSON.stringify(scores));
+};
+
+function ClearHighScores() {
+    localStorage.removeItem(lsHighScore);
+}
+
+/**********************************************************************************
+Functions
+************************************************************************************/
+// Accessibility function for uses interacting with the site via keyboard
+// returns a boolean
+function IsKeyboardClick(event) {
+    return event.key === "Enter" || event.key === " ";
+};
+
+//returns nothing
+function highscoreClick() {
+    LoadScoreBoard();
+
+    ChangeSections(sectionScoreBoard);
+    sectionHeader.style = "visibility: hidden";
+};
+
+//Clear current high scores and reload the page elements
+//based on what is currently in local storage for high scores
+function LoadScoreBoard() {
+
+    let scores = GetHighScores();
+
+    scores.sort(function (a, b) {
+        return b.score - a.score;
+    });
+
+    let scoreBoard = document.querySelector("#ScoreBoard ol");
+
+    scoreBoard.innerHTML = "";
+
+    scores.forEach(thisScore => {
+        let newScore = document.createElement("li");
+
+        newScore.textContent = thisScore.initials + ' - ' + thisScore.score;
+
+        scoreBoard.appendChild(newScore);
+    });
+};
+
+//returns a new highscore object
+function CreateHighScoreEntry(initials, score) {
+    return {
+        initials: initials,
+        score: score
+    }
+};
 
 function answerClick(event) {
     if (event.target.tagName !== "LI" || responseTimout != undefined) {
@@ -162,6 +188,7 @@ function ResetUsedQuestions() {
     }
 };
 
+//displays the requested section and hides all other sections
 function ChangeSections(NewSection) {
     sections.forEach(element => {
         if (element === NewSection) {
@@ -182,16 +209,17 @@ function LoadQuestion() {
 
     const question = GetQuestion();
 
-    const prompt = document.querySelector("#Question h1");
-    prompt.textContent = question.prompt;
+    document.querySelector("#Question h1") = question.prompt;
 
     const promptLIs = document.querySelectorAll("#Question li");
 
+    //Loop through all the available answer slots
+    //if there is an avaiable answer load it into the corresponding slot
+    //else hide the available slot since there is no answer available for it
     for (let index = 0; index < promptLIs.length; index++) {
         if (index < question.choices.length) {
             promptLIs[index].classList.remove("hide");
             promptLIs[index].textContent = question.choices[index];
-
         } else {
             promptLIs[index].classList.add("hide");
         }
