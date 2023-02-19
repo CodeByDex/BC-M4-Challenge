@@ -50,7 +50,7 @@ document.querySelector("#ButtonStart").addEventListener("click", function () {
 
     ChangeSections(sectionQuestion);
 
-    StartTimer();
+    StartGameInterval();
 });
 
 document.querySelector("#InitialForm button").addEventListener("click", function () {
@@ -68,19 +68,19 @@ document.querySelector("#InitialForm button").addEventListener("click", function
     }
 });
 
-document.querySelector("#LinkHighScore").addEventListener("click", highscoreClick);
+document.querySelector("#LinkHighScore").addEventListener("click", ClickHighScore);
 
 document.querySelector("#LinkHighScore").addEventListener("keyup", function (event) {
     if (IsKeyboardClick(event)) {
-        highscoreClick();
+        ClickHighScore();
     }
 });
 
-sectionQuestion.querySelector(":scope ol").addEventListener("click", answerClick);
+sectionQuestion.querySelector(":scope ol").addEventListener("click", ClickAnswer);
 
 sectionQuestion.querySelector(":scope ol").addEventListener("keyup", function (event) {
     if (IsKeyboardClick(event)) {
-        answerClick(event);
+        ClickAnswer(event);
     }
 });
 
@@ -119,7 +119,7 @@ function IsKeyboardClick(event) {
 };
 
 //returns nothing
-function highscoreClick() {
+function ClickHighScore() {
     LoadScoreBoard();
 
     ChangeSections(sectionScoreBoard);
@@ -157,7 +157,7 @@ function CreateHighScoreEntry(initials, score) {
     }
 };
 
-function answerClick(event) {
+function ClickAnswer(event) {
     if (event.target.tagName !== "LI" || responseTimout != undefined) {
         //the user didn't click an answer so don't do anything
         //or the user already answered and the question hasn't reset yet. 
@@ -182,12 +182,6 @@ function answerClick(event) {
     wrongWrightBox.classList.remove("hide");
 }
 
-function ResetUsedQuestions() {
-    while (usedQuestions.pop() !== undefined) {
-        usedQuestions.pop();
-    }
-};
-
 //displays the requested section and hides all other sections
 function ChangeSections(NewSection) {
     sections.forEach(element => {
@@ -197,6 +191,12 @@ function ChangeSections(NewSection) {
             element.classList.add("hide");
         }
     });
+};
+
+function ResetUsedQuestions() {
+    while (usedQuestions.pop() !== undefined) {
+        usedQuestions.pop();
+    }
 };
 
 function LoadQuestion() {
@@ -232,6 +232,18 @@ function LoadQuestion() {
     wrongWrightBox.classList.add("hide");
 };
 
+function GetQuestion() {
+    const randomNum = Math.floor(Math.random() * Questions.length);
+
+    if (usedQuestions.some(r => r === randomNum)) {
+        return GetQuestion();
+    } else {
+        usedQuestions.push(randomNum);
+    }
+
+    return Questions[randomNum];
+};
+
 function StartQuestionInterval() {
     //reset the interval if it's still running from previous question
     clearInterval(questionInterval);
@@ -245,19 +257,7 @@ function StartQuestionInterval() {
     }, 1000);
 }
 
-function GetQuestion() {
-    const randomNum = Math.floor(Math.random() * Questions.length);
-
-    if (usedQuestions.some(r => r === randomNum)) {
-        return GetQuestion();
-    } else {
-        usedQuestions.push(randomNum);
-    }
-
-    return Questions[randomNum];
-};
-
-function StartTimer() {
+function StartGameInterval() {
     gameTimeout = gameStartTime;
 
     gameInterval = setInterval(function () {
@@ -269,12 +269,12 @@ function StartTimer() {
             return;
         }
 
-        UpdateTimeLeft();
+        UpdateGameInterval();
     }, 1000)
 
 };
 
-function UpdateTimeLeft() {
+function UpdateGameInterval() {
     let timeLeftBox = document.querySelector("#TimeLeft");
 
     if (gameTimeout >= 0) {
@@ -299,10 +299,13 @@ function EndGame() {
     ResetUsedQuestions();
 
     gameTimeout = gameStartTime;
-    UpdateTimeLeft();
+    UpdateGameInterval();
 };
 
-UpdateTimeLeft();
+/**********************************************************************************
+Program Execution
+************************************************************************************/
+UpdateGameInterval();
 //Needed to get scores from storage initially if they already exist
 LoadScoreBoard();
 
