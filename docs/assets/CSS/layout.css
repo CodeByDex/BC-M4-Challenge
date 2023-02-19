@@ -39,7 +39,7 @@ main section>* {
     display: none;
 }
 
-#InitialForm {
+#Initial-Form {
     display: flex;
     gap: var(--margin-base);
 }
@@ -48,11 +48,11 @@ main section>* {
     margin: auto 0;
 }
 
-#ScoreBoard li {
+#Score-Board li {
     margin-bottom: var(--margin-thin);
 }
 
-#ScoreBoard ol {
+#Score-Board ol {
     padding: var(--padding-thin);
 }
 

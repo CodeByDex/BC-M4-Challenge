@@ -1,18 +1,20 @@
 "use strict";
 
+/* *********************************************************************************
+Variable Declariations
+************************************************************************************/
 const gameStartTime = 60;
 const lsHighScore = "HighScores";
-
 
 const sectionStart = document.querySelector("#Start");
 const sectionQuestion = document.querySelector("#Question");
 const sectionResults = document.querySelector("#Results");
-const sectionScoreBoard = document.querySelector("#ScoreBoard");
+const sectionScoreBoard = document.querySelector("#Score-Board");
 const sections = [sectionStart, sectionQuestion, sectionResults, sectionScoreBoard];
 const sectionHeader = document.querySelector("header");
 
 const wrongWrightBox = document.querySelector("#Question p");
-const inputNewInitials = document.querySelector("#InitialForm input");
+const inputNewInitials = document.querySelector("#Initial-Box");
 
 let responseTimout;
 let questionInterval;
@@ -21,29 +23,37 @@ let questionTimePenalty = 0;
 let score = 0;
 let gameTimeout = gameStartTime;
 let gameInterval;
-let highScores = [];
-
 
 let Questions;
 let currentAnswer = "";
 let usedQuestions = [];
 
-document.querySelector("#ButtonBack").addEventListener("click", function () {
+/**********************************************************************************
+Events
+************************************************************************************/
+
+document.querySelector("#Button-Back").addEventListener("click", function () {
     ChangeSections(sectionStart);
     sectionHeader.style = "";
 });
 
-document.querySelector("#ButtonStart").addEventListener("click", function () {
+document.querySelector("#Button-Clear-High-Score").addEventListener("click", function () {
+    ClearHighScores();
+
+    LoadScoreBoard();
+});
+
+document.querySelector("#Button-Start").addEventListener("click", function () {
     score = 0;
 
     LoadQuestion();
 
     ChangeSections(sectionQuestion);
 
-    StartTimer();
+    StartGameInterval();
 });
 
-document.querySelector("#InitialForm button").addEventListener("click", function () {
+document.querySelector("#Initial-Form button").addEventListener("click", function () {
     let initals = inputNewInitials.value;
 
     if (initals.length > 3 || initals.length < 1) {
@@ -58,63 +68,88 @@ document.querySelector("#InitialForm button").addEventListener("click", function
     }
 });
 
-document.querySelector("#LinkHighScore").addEventListener("click", highscoreClick);
+document.querySelector("#Link-High-Score").addEventListener("click", ClickHighScore);
 
-document.querySelector("#LinkHighScore").addEventListener("keyup", function (event) {
+document.querySelector("#Link-High-Score").addEventListener("keyup", function (event) {
     if (IsKeyboardClick(event)) {
-        highscoreClick();
+        ClickHighScore();
     }
 });
 
-document.querySelector("#ButtonClearHighScore").addEventListener("click", function () {
-    localStorage.removeItem(lsHighScore);
+sectionQuestion.querySelector(":scope ol").addEventListener("click", ClickAnswer);
 
-    highScores = [];
-
-    LoadScoreBoard();
+sectionQuestion.querySelector(":scope ol").addEventListener("keyup", function (event) {
+    if (IsKeyboardClick(event)) {
+        ClickAnswer(event);
+    }
 });
 
-function IsKeyboardClick(event) {
-    return event.key === "Enter" || event.key === " ";
+/**********************************************************************************
+Local Storage Functions
+************************************************************************************/
+function GetHighScores() {
+    let scoreString = localStorage.getItem(lsHighScore);
+
+    if (scoreString != null) {
+        return JSON.parse(scoreString);
+    } else {
+        return [];
+    }
+};
+
+function AddHighScore(highScore) {
+    let scores = GetHighScores();
+
+    scores.push(highScore);
+
+    localStorage.setItem(lsHighScore, JSON.stringify(scores));
+};
+
+function ClearHighScores() {
+    localStorage.removeItem(lsHighScore);
 }
 
-function highscoreClick() {
+/**********************************************************************************
+Functions
+************************************************************************************/
+// Accessibility function for uses interacting with the site via keyboard
+// returns a boolean
+function IsKeyboardClick(event) {
+    return event.key === "Enter" || event.key === " ";
+};
+
+//returns nothing
+function ClickHighScore() {
     LoadScoreBoard();
 
     ChangeSections(sectionScoreBoard);
     sectionHeader.style = "visibility: hidden";
-}
+};
 
+//Clear current high scores and reload the page elements
+//based on what is currently in local storage for high scores
 function LoadScoreBoard() {
-    let scoreString = localStorage.getItem(lsHighScore);
 
-    if (scoreString != null) {
-        highScores = JSON.parse(scoreString);
-    }
+    let scores = GetHighScores();
 
-    highScores.sort(function (a, b) {
+    scores.sort(function (a, b) {
         return b.score - a.score;
     });
 
-    let scoreBoard = document.querySelector("#ScoreBoard ol");
+    let scoreBoard = sectionScoreBoard.querySelector(":scope ol");
 
     scoreBoard.innerHTML = "";
 
-    highScores.forEach(highScore => {
+    scores.forEach(thisScore => {
         let newScore = document.createElement("li");
 
-        newScore.textContent = highScore.initials + ' - ' + highScore.score;
+        newScore.textContent = thisScore.initials + ' - ' + thisScore.score;
 
         scoreBoard.appendChild(newScore);
     });
 };
 
-function AddHighScore(highScore) {
-    highScores.push(highScore);
-
-    localStorage.setItem(lsHighScore, JSON.stringify(highScores));
-};
-
+//returns a new highscore object
 function CreateHighScoreEntry(initials, score) {
     return {
         initials: initials,
@@ -122,16 +157,7 @@ function CreateHighScoreEntry(initials, score) {
     }
 };
 
-sectionQuestion.querySelector(":scope ol").addEventListener("click", answerClick);
-
-sectionQuestion.querySelector(":scope ol").addEventListener("keyup", function (event) {
-    if (IsKeyboardClick(event)) {
-        answerClick(event);
-    }
-});
-
-
-function answerClick(event) {
+function ClickAnswer(event) {
     if (event.target.tagName !== "LI" || responseTimout != undefined) {
         //the user didn't click an answer so don't do anything
         //or the user already answered and the question hasn't reset yet. 
@@ -156,12 +182,7 @@ function answerClick(event) {
     wrongWrightBox.classList.remove("hide");
 }
 
-function ResetUsedQuestions() {
-    while (usedQuestions.pop() !== undefined) {
-        usedQuestions.pop();
-    }
-};
-
+//displays the requested section and hides all other sections
 function ChangeSections(NewSection) {
     sections.forEach(element => {
         if (element === NewSection) {
@@ -170,6 +191,12 @@ function ChangeSections(NewSection) {
             element.classList.add("hide");
         }
     });
+};
+
+function ResetUsedQuestions() {
+    while (usedQuestions.pop() !== undefined) {
+        usedQuestions.pop();
+    }
 };
 
 function LoadQuestion() {
@@ -182,16 +209,17 @@ function LoadQuestion() {
 
     const question = GetQuestion();
 
-    const prompt = document.querySelector("#Question h1");
-    prompt.textContent = question.prompt;
+    document.querySelector("#Question h1").textContent = question.prompt;
 
     const promptLIs = document.querySelectorAll("#Question li");
 
+    //Loop through all the available answer slots
+    //if there is an avaiable answer load it into the corresponding slot
+    //else hide the available slot since there is no answer available for it
     for (let index = 0; index < promptLIs.length; index++) {
         if (index < question.choices.length) {
             promptLIs[index].classList.remove("hide");
             promptLIs[index].textContent = question.choices[index];
-
         } else {
             promptLIs[index].classList.add("hide");
         }
@@ -202,6 +230,18 @@ function LoadQuestion() {
     currentAnswer = question.answer;
 
     wrongWrightBox.classList.add("hide");
+};
+
+function GetQuestion() {
+    const randomNum = Math.floor(Math.random() * Questions.length);
+
+    if (usedQuestions.some(r => r === randomNum)) {
+        return GetQuestion();
+    } else {
+        usedQuestions.push(randomNum);
+    }
+
+    return Questions[randomNum];
 };
 
 function StartQuestionInterval() {
@@ -217,19 +257,7 @@ function StartQuestionInterval() {
     }, 1000);
 }
 
-function GetQuestion() {
-    const randomNum = Math.floor(Math.random() * Questions.length);
-
-    if (usedQuestions.some(r => r === randomNum)) {
-        return GetQuestion();
-    } else {
-        usedQuestions.push(randomNum);
-    }
-
-    return Questions[randomNum];
-};
-
-function StartTimer() {
+function StartGameInterval() {
     gameTimeout = gameStartTime;
 
     gameInterval = setInterval(function () {
@@ -241,13 +269,13 @@ function StartTimer() {
             return;
         }
 
-        UpdateTimeLeft();
+        UpdateGameInterval();
     }, 1000)
 
 };
 
-function UpdateTimeLeft() {
-    let timeLeftBox = document.querySelector("#TimeLeft");
+function UpdateGameInterval() {
+    let timeLeftBox = document.querySelector("#Time-Left");
 
     if (gameTimeout >= 0) {
         timeLeftBox.textContent = gameTimeout;
@@ -271,10 +299,13 @@ function EndGame() {
     ResetUsedQuestions();
 
     gameTimeout = gameStartTime;
-    UpdateTimeLeft();
+    UpdateGameInterval();
 };
 
-UpdateTimeLeft();
+/**********************************************************************************
+Program Execution
+************************************************************************************/
+UpdateGameInterval();
 //Needed to get scores from storage initially if they already exist
 LoadScoreBoard();
 
