@@ -1,69 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Web Dev Quiz</title>
-        <meta name="author" content="Ryan Spath">
-        <meta name="keywords" content="">
-        <meta name="description" content="">
-        <meta name="og:title" content="Web Dev Quiz">
-        <meta name="og:type" content="website">
-        <meta name="og:image" content="">
-        <meta name="og:url" content="">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    
-        <link rel="stylesheet" href="./assets/CSS/reset.css">
-        <link rel="stylesheet" href="./assets/CSS/color.css">
-        <link rel="stylesheet" href="./assets/CSS/layout.css">
-        <link rel="stylesheet" href="./assets/CSS/text.css">
-        <link rel="stylesheet" href="./assets/CSS/effect.css">
 
-        <!-- <link rel="stylesheet" href="../frame.css"> -->
-    </head>
-    <body>
-        <header>
-            <section><p id="LinkHighScore">High Score</p></section>
-            <section><p>Timer: <span id="TimeLeft">#</span></p></section>
-        </header>
-        <main>
-            <section id="Start" class="">
-                <h1>Coding Quiz Challenge</h1>
-                <article>
-                    <p>Try to answer the following code-related questions within the time line.</p>
-                    <p>Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
-                </article>
-                <button id="ButtonStart">Start Quiz</button>
-            </section>
-            <section id="Question" class="hide">
-                <h1>Questions about code:</h1>
-                <ol>
-                    <li>Answer 1</li>
-                    <li>Answer 2</li>
-                    <li>Answer 3</li>
-                    <li>Answer 4</li>
-                </ol>
-                <p>Wrong/Right</p>
-            </section>
-            <section id="Results" class="hide">
-                <h1>All done!</h1>
-                <p>Your finale score is <span id="Score">##</span>.</p>
-                <article id="InitialForm">
-                    <label>Enter initials:</label>
-                    <input type="text">
-                    <button>Submit</button>
-                </article>
-            </section>
-            <section id="ScoreBoard" class="hide">
-                <h1>High scores</h1>
-                <ol>
-                    <li><span>Initial</span> - <span>##</span></li>
-                    <li><span>Initial</span> - <span>##</span></li>
-                </ol>
-                <button id="ButtonBack">Go back</button>
-                <button id="ButtonClearHighScore">Clear high scores</button>
-            </section>
-        </main>
+<head>
+    <meta charset="utf-8">
+    <title>Web Dev Quiz</title>
+    <meta name="author" content="Ryan Spath">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="og:title" content="Web Dev Quiz">
+    <meta name="og:type" content="website">
+    <meta name="og:image" content="">
+    <meta name="og:url" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-        <script src="./assets/scripts/script.js"></script>
-    </body>
+    <link rel="stylesheet" href="./assets/CSS/reset.css">
+    <link rel="stylesheet" href="./assets/CSS/color.css">
+    <link rel="stylesheet" href="./assets/CSS/layout.css">
+    <link rel="stylesheet" href="./assets/CSS/text.css">
+    <link rel="stylesheet" href="./assets/CSS/effect.css">
+    <link rel="stylesheet" href="./assets/CSS/accesibility.css">
+
+    <!-- <link rel="stylesheet" href="../frame.css"> -->
+</head>
+
+<body>
+    <header>
+        <section>
+            <p id="LinkHighScore" tabindex="10" role="button">High Score</p>
+        </section>
+        <section>
+            <p>Timer: <span id="TimeLeft">#</span></p>
+        </section>
+    </header>
+    <main>
+        <section id="Start" class="">
+            <h1>Coding Quiz Challenge</h1>
+            <article>
+                <p>Try to answer the following code-related questions within the time line.</p>
+                <p>Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
+            </article>
+            <button id="ButtonStart" role="button">Start Quiz</button>
+        </section>
+        <section id="Question" class="hide">
+            <h1>Questions about code:</h1>
+            <ol>
+                <li tabindex="31" role="button">Answer 1</li>
+                <li tabindex="32" role="button">Answer 2</li>
+                <li tabindex="33" role="button">Answer 3</li>
+                <li tabindex="34" role="button">Answer 4</li>
+            </ol>
+            <p>Wrong/Right</p>
+        </section>
+        <section id="Results" class="hide">
+            <h1>All done!</h1>
+            <p>Your finale score is <span id="Score">##</span>.</p>
+            <article id="InitialForm">
+                <label for="Initial-Box">Enter initials:</label>
+                <input type="text" id="Initial-Box">
+                <button role="button">Submit</button>
+            </article>
+        </section>
+        <section id="ScoreBoard" class="hide">
+            <h1>High scores</h1>
+            <ol>
+                <li><span>Initial</span> - <span>##</span></li>
+                <li><span>Initial</span> - <span>##</span></li>
+            </ol>
+            <button id="ButtonBack" role="button">Go back</button>
+            <button id="ButtonClearHighScore" role="button">Clear high scores</button>
+        </section>
+    </main>
+
+    <script src="./assets/scripts/script.js"></script>
+</body>
+
 </html>

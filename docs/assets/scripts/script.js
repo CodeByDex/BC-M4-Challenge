@@ -28,12 +28,12 @@ let Questions;
 let currentAnswer = "";
 let usedQuestions = [];
 
-document.querySelector("#ButtonBack").addEventListener("click", function() {
+document.querySelector("#ButtonBack").addEventListener("click", function () {
     ChangeSections(sectionStart);
     sectionHeader.style = "";
 });
 
-document.querySelector("#ButtonStart").addEventListener("click", function() {
+document.querySelector("#ButtonStart").addEventListener("click", function () {
     score = 0;
 
     LoadQuestion();
@@ -43,12 +43,12 @@ document.querySelector("#ButtonStart").addEventListener("click", function() {
     StartTimer();
 });
 
-document.querySelector("#InitialForm button").addEventListener("click", function() {
+document.querySelector("#InitialForm button").addEventListener("click", function () {
     let initals = inputNewInitials.value;
 
-    if (initals.length > 3 || initals.length < 1){
+    if (initals.length > 3 || initals.length < 1) {
         alert("Initials must be 1-3 characters");
-    } else {    
+    } else {
         AddHighScore(CreateHighScoreEntry(initals, score));
 
         LoadScoreBoard();
@@ -58,30 +58,42 @@ document.querySelector("#InitialForm button").addEventListener("click", function
     }
 });
 
-document.querySelector("#LinkHighScore").addEventListener("click", function () {
-    LoadScoreBoard();
+document.querySelector("#LinkHighScore").addEventListener("click", highscoreClick);
 
-    ChangeSections(sectionScoreBoard);
-    sectionHeader.style = "visibility: hidden";
+document.querySelector("#LinkHighScore").addEventListener("keyup", function (event) {
+    if (IsKeyboardClick(event)) {
+        highscoreClick();
+    }
 });
 
 document.querySelector("#ButtonClearHighScore").addEventListener("click", function () {
     localStorage.removeItem(lsHighScore);
-    
+
     highScores = [];
 
     LoadScoreBoard();
 });
 
+function IsKeyboardClick(event) {
+    return event.key === "Enter" || event.key === " ";
+}
+
+function highscoreClick() {
+    LoadScoreBoard();
+
+    ChangeSections(sectionScoreBoard);
+    sectionHeader.style = "visibility: hidden";
+}
+
 function LoadScoreBoard() {
     let scoreString = localStorage.getItem(lsHighScore);
 
-    if (scoreString != null){
+    if (scoreString != null) {
         highScores = JSON.parse(scoreString);
     }
 
-    highScores.sort(function(a, b) {
-        return b.score-a.score;
+    highScores.sort(function (a, b) {
+        return b.score - a.score;
     });
 
     let scoreBoard = document.querySelector("#ScoreBoard ol");
@@ -97,22 +109,30 @@ function LoadScoreBoard() {
     });
 };
 
-function AddHighScore(highScore){
+function AddHighScore(highScore) {
     highScores.push(highScore);
 
     localStorage.setItem(lsHighScore, JSON.stringify(highScores));
 };
 
-function CreateHighScoreEntry(initials, score){
+function CreateHighScoreEntry(initials, score) {
     return {
         initials: initials,
         score: score
     }
 };
 
-sectionQuestion.querySelector(":scope ol").addEventListener("click", function(event) {
-    if (event.target.tagName !== "LI" || responseTimout != undefined)
-    {
+sectionQuestion.querySelector(":scope ol").addEventListener("click", answerClick);
+
+sectionQuestion.querySelector(":scope ol").addEventListener("keyup", function (event) {
+    if (IsKeyboardClick(event)) {
+        answerClick(event);
+    }
+});
+
+
+function answerClick(event) {
+    if (event.target.tagName !== "LI" || responseTimout != undefined) {
         //the user didn't click an answer so don't do anything
         //or the user already answered and the question hasn't reset yet. 
         return;
@@ -124,9 +144,8 @@ sectionQuestion.querySelector(":scope ol").addEventListener("click", function(ev
         LoadQuestion();
 
     }, 2000);
-    
-    if (event.target.textContent === currentAnswer)
-    {
+
+    if (event.target.textContent === currentAnswer) {
         wrongWrightBox.textContent = "Correct!";
         score += 1 + questionTimeBonus;
     } else {
@@ -135,11 +154,10 @@ sectionQuestion.querySelector(":scope ol").addEventListener("click", function(ev
     }
 
     wrongWrightBox.classList.remove("hide");
-});
+}
 
 function ResetUsedQuestions() {
-    while (usedQuestions.pop() !== undefined)
-    {
+    while (usedQuestions.pop() !== undefined) {
         usedQuestions.pop();
     }
 };
@@ -156,8 +174,7 @@ function ChangeSections(NewSection) {
 
 function LoadQuestion() {
     //We've used all the available questions so end the game. 
-    if(Questions.length === usedQuestions.length)
-    {
+    if (Questions.length === usedQuestions.length) {
         EndGame();
 
         return;
@@ -171,13 +188,11 @@ function LoadQuestion() {
     const promptLIs = document.querySelectorAll("#Question li");
 
     for (let index = 0; index < promptLIs.length; index++) {
-        if (index < question.choices.length)
-        {
+        if (index < question.choices.length) {
             promptLIs[index].classList.remove("hide");
             promptLIs[index].textContent = question.choices[index];
 
-        } else 
-        {
+        } else {
             promptLIs[index].classList.add("hide");
         }
     }
@@ -202,7 +217,7 @@ function StartQuestionInterval() {
     }, 1000);
 }
 
-function GetQuestion(){
+function GetQuestion() {
     const randomNum = Math.floor(Math.random() * Questions.length);
 
     if (usedQuestions.some(r => r === randomNum)) {
@@ -225,7 +240,7 @@ function StartTimer() {
             EndGame();
             return;
         }
-        
+
         UpdateTimeLeft();
     }, 1000)
 
@@ -234,7 +249,7 @@ function StartTimer() {
 function UpdateTimeLeft() {
     let timeLeftBox = document.querySelector("#TimeLeft");
 
-    if (gameTimeout >= 0){
+    if (gameTimeout >= 0) {
         timeLeftBox.textContent = gameTimeout;
     } else {
         timeLeftBox.textContent = 0;

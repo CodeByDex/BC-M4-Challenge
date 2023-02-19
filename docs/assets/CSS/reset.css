@@ -8,6 +8,7 @@
     box-sizing: border-box;
 }
 
-ul, ol {
+ul,
+ol {
     list-style-position: inside;
 }
