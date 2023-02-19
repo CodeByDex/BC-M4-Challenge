@@ -1,6 +1,6 @@
 "use strict";
 
-/* *********************************************************************************
+/**********************************************************************************
 Variable Declariations
 ************************************************************************************/
 const gameStartTime = 60;
@@ -212,6 +212,12 @@ function LoadQuestion() {
     document.querySelector("#Question h1").textContent = question.prompt;
 
     const promptLIs = document.querySelectorAll("#Question li");
+
+    //Randomize the order of the answers so multiple rounds
+    //of game play they show up in different orders. 
+    question.choices.sort(function() {
+        return Math.random() - 0.5;
+    });
 
     //Loop through all the available answer slots
     //if there is an avaiable answer load it into the corresponding slot
