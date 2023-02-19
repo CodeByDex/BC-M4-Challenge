@@ -1,0 +1,6 @@
+/* It's recommended that all interactive content react when
+    accessed via keyboard */
+[type="button"]:focus {
+    border-style: double;
+    border-width: 3px;
+}

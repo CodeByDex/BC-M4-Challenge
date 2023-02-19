@@ -31,7 +31,7 @@ main {
     margin: 0 auto;
 }
 
-main section > * {
+main section>* {
     margin-bottom: var(--margin-thick);
 }
 
